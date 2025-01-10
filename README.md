@@ -70,9 +70,11 @@ AI Musician Agent es una aplicación que combina inteligencia artificial y tecno
 
 ![Agent IA](https://cdn.discordapp.com/attachments/968657906184642630/1327353184645025902/image.png?ex=6782c17c&is=67816ffc&hm=185d72cc3a30ce2ec0a84668b0d72f4be30e4dd591f17b48e3a4ff611fe5ec6c&)
 
-### 🤝 Únete a la Revolución Musical
+### 🤝 Únete
 
-AI Musician Agent está transformando la forma en que los artistas interactúan con la tecnología blockchain y la IA. ¿Estás listo para llevar tu carrera musical al siguiente nivel? ¡Prueba AI Musician Agent hoy y descubre el futuro de la industria musical!
+AI Musician Agent está transformando la forma en que los artistas interactúan con la tecnología blockchain y la IA.
+¿Estás listo para llevar tu carrera musical al siguiente nivel?
+¡Prueba AI Musician Agent hoy y descubre el futuro de la industria musical!
 
 [Empieza Ahora](https://github.com/Beor18/ai-musician-agent)
 
