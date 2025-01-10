@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎵 AI Musician Agent: Tu Asistente Virtual para la Industria Musical
 
-## Getting Started
+Idea original: [sweetmantech](https://github.com/sweetmantech)
 
-First, run the development server:
+## 🚀 Revoluciona tu Carrera Musical con Tecnología Blockchain
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+AI Musician Agent es una aplicación que combina inteligencia artificial y tecnología blockchain para impulsar la carrera de músicos y artistas. Diseñada para simplificar la gestión y promoción de lanzamientos musicales, esta herramienta te ayuda a navegar el complejo mundo de la música digital con facilidad.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### ✨ Características Principales (En Desarrollo)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 🤖 **Chat Inteligente**: Interactúa con un agente de IA especializado en la industria musical.
+- 🎹 **Modo Automático**: Deja que el agente trabaje por ti, generando ideas y ejecutando acciones.
+- 🔗 **Integración Blockchain**: Crea y gestiona colecciones NFT para tus lanzamientos musicales.
+- 💼 **Gestión de Carteras**: Configura y administra carteras on-chain para tus ingresos musicales.
+- 🪙 **Tokens Sociales**: Implementa tokens para aumentar el engagement de tus fans.
+- 📜 **Contratos Inteligentes**: Maneja derechos musicales con contratos inteligentes.
+- 🚀 **Campañas Promocionales**: Gestiona campañas para tus últimos sencillos.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🛠 Instalación y Uso
 
-## Learn More
+1. Clona el repositorio:
 
-To learn more about Next.js, take a look at the following resources:
+   ```shg
+   git clone https://github.com/Beor18/ai-musician-agent.git
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Instala las dependencias:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```sh
+   cd ai-musician-agent
+   npm install
+   ```
 
-## Deploy on Vercel
+3. Configura las variables de entorno en un archivo \`.env\`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```sh
+   OPENAI_API_KEY=tu_clave_api_de_openai
+   CDP_API_KEY_NAME=tu_nombre_de_clave_api_cdp
+   CDP_API_KEY_PRIVATE_KEY=tu_clave_privada_api_cdp
+   NETWORK_ID=base-sepolia
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Inicia la aplicación:
+
+   ```sh
+   npm run dev
+   ```
+
+5. Abre tu navegador y visita \`http://localhost:3000\`
+
+### 🔧 Tecnologías Utilizadas
+
+- Next.js
+- React
+- TypeScript
+- Shadcn/UI
+- OpenAI GPT-4
+- Coinbase CDP (Crypto Developer Platform)
+
+### 🔮 Próximos Pasos
+
+- Integración con plataformas de streaming musical
+- Análisis de datos y métricas para artistas
+- Marketplace de NFTs musicales integrado
+- Herramientas de colaboración para artistas
+
+### 🤝 Únete a la Revolución Musical
+
+AI Musician Agent está transformando la forma en que los artistas interactúan con la tecnología blockchain y la IA. ¿Estás listo para llevar tu carrera musical al siguiente nivel? ¡Prueba AI Musician Agent hoy y descubre el futuro de la industria musical!
+
+[Empieza Ahora](https://github.com/Beor18/ai-musician-agent)
+
+---
+
+Desarrollado con ❤️ por Fernando Lopez

@@ -1,101 +1,210 @@
-import Image from "next/image";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { ChatMessage } from "@/components/ChatMessage";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [mode, setMode] = useState<"chat" | "auto">("chat");
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAutoRunning, setIsAutoRunning] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    setIsLoading(true);
+    setError(null);
+    setMessages((prev) => [...prev, `You: ${input}`]);
+
+    try {
+      const response = await fetch("/api/agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode, message: input }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value);
+          setMessages((prev) => [...prev, `Agent: ${chunk}`]);
+        }
+      }
+    } catch (error: any) {
+      console.error("Error:", error);
+      setError(`Error: ${error.message}`);
+    } finally {
+      setInput("");
+      setIsLoading(false);
+    }
+  };
+
+  const startAutoMode = async () => {
+    setIsLoading(true);
+    setIsAutoRunning(true);
+    setError(null);
+    setMessages([]);
+
+    try {
+      const response = await fetch("/api/agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "auto" }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value);
+          setMessages((prev) => [...prev, chunk]);
+        }
+      }
+    } catch (error: any) {
+      console.error("Error:", error);
+      setError(`Error: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+      setIsAutoRunning(false);
+    }
+  };
+
+  const stopAutoMode = async () => {
+    try {
+      const response = await fetch("/api/agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "stop" }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setMessages((prev) => [...prev, `System: ${data.message}`]);
+    } catch (error: any) {
+      console.error("Error stopping auto mode:", error);
+      setError(`Error stopping auto mode: ${error.message}`);
+    } finally {
+      setIsAutoRunning(false);
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <Tabs
+        value={mode}
+        onValueChange={(value: string) => setMode(value as "chat" | "auto")}
+      >
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="chat">Chat Mode</TabsTrigger>
+          <TabsTrigger value="auto">Auto Mode</TabsTrigger>
+        </TabsList>
+        <TabsContent value="chat">
+          <Card>
+            <CardHeader>
+              <CardTitle>Chat with Musician Agent</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-[800px] w-full rounded-md border">
+                <div className="p-4">
+                  {messages.map((msg, index) => (
+                    <div key={index} className="mb-4">
+                      <ChatMessage
+                        message={msg}
+                        isLast={index === messages.length - 1}
+                      />
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
+              </ScrollArea>
+              <form onSubmit={handleSubmit} className="flex gap-2 mt-4">
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Type your message..."
+                  disabled={isLoading}
+                  className="flex-grow"
+                />
+                <Button type="submit" disabled={isLoading}>
+                  Send
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="auto">
+          <Card>
+            <CardHeader>
+              <CardTitle>Auto Mode</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!isAutoRunning ? (
+                <Button onClick={startAutoMode} disabled={isLoading}>
+                  Start Auto Mode
+                </Button>
+              ) : (
+                <Button onClick={stopAutoMode} variant="destructive">
+                  Stop Auto Mode
+                </Button>
+              )}
+              <ScrollArea className="h-[400px] w-full rounded-md border mt-4">
+                <div className="p-4">
+                  {messages.map((msg, index) => (
+                    <div key={index} className="mb-4">
+                      <ChatMessage
+                        message={msg}
+                        isLast={index === messages.length - 1}
+                      />
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+      {error && (
+        <Alert variant="destructive" className="mt-4">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 }
