@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { ChatMessage } from "@/components/ChatMessage";
+import "prismjs/themes/prism-tomorrow.css";
 
 export default function Home() {
   const [mode, setMode] = useState<"chat" | "auto">("chat");
@@ -135,7 +136,7 @@ export default function Home() {
         <TabsContent value="chat">
           <Card>
             <CardHeader>
-              <CardTitle>Chat with Musician Agent</CardTitle>
+              <CardTitle>Chat with Agent</CardTitle>
             </CardHeader>
             <CardContent>
               <ScrollArea className="h-[800px] w-full rounded-md border">
