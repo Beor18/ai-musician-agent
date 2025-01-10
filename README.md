@@ -1,4 +1,4 @@
-# 🎵 AI Musician Agent: Tu Asistente Virtual para la Industria Musical
+# 🎵 AI Musician Agent: Tu Asistente para la música
 
 Idea original: [sweetmantech](https://github.com/sweetmantech)
 
